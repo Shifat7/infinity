@@ -1,0 +1,264 @@
+@import "tailwindcss";
+
+@theme {
+  --color-purple: var(--squish-me-purple);
+  --color-green: var(--soft-green);
+  --color-yellow: var(--puffy-yellow);
+  --color-pink: var(--playful-pink);
+  --color-blue: var(--container-blue);
+  --color-foreground-rgb: var(--foregroun-rgb);
+  --color-background-start-rgb: var(--background-start-rgb);
+  --color-background-end-rgb: var(--background-end-rgb);
+}
+
+@layer base {
+  :root {
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 255, 255, 255;
+    --foreground-rgb: 0, 0, 0;;
+
+    /* Soft & Puffy Palette */
+    --squish-me-purple: #c8b6ff;
+    --soft-green: #d9f7e6;
+    --puffy-yellow: #fdfd96;
+    --playful-pink: #ffdfd3;
+    --container-blue: #e0e8f6;
+
+    /* Comic primitives */
+    --comic-border-width: 4px;
+    --comic-border-color: #000;
+    --comic-shadow: 8px 8px 0 var(--comic-border-color);
+    --comic-radius: 1.25rem;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .puffy-shadow {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06),
+      inset 0 1px 3px 0 rgba(255, 255, 255, 0.5);
+  }
+
+  .circuit-pattern {
+    background: radial-gradient(
+        circle at 20% 80%,
+        rgba(120, 119, 198, 0.3) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 20%,
+        rgba(255, 119, 198, 0.3) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 40% 40%,
+        rgba(120, 200, 255, 0.2) 0%,
+        transparent 50%
+      );
+    position: relative;
+  }
+
+  .circuit-pattern::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(
+        90deg,
+        rgba(59, 130, 246, 0.1) 1px,
+        transparent 1px
+      ),
+      linear-gradient(180deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  /* Comic ink: bold + hard offset shadow */
+  .inked {
+    --ink-x: 10px;
+    --ink-y: 10px;
+    color: hsl(var(--h, 260) 80% 45%);
+    font-weight: 900;
+    letter-spacing: 0.01em;
+    line-height: 0.95;
+    filter: drop-shadow(var(--ink-x) var(--ink-y) 0 #000);
+  }
+
+  .inked-outline {
+    -webkit-text-stroke: 6px #000;
+    paint-order: stroke fill;
+  }
+
+  /* Speed lines layer */
+  .speed-lines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      110deg,
+      rgba(0, 0, 0, 0.08) 0 6px,
+      transparent 6px 18px
+    );
+    mask: radial-gradient(
+      circle at 50% 50%,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.6) 45%,
+      rgba(0, 0, 0, 0.2) 65%,
+      transparent 75%
+    );
+    -webkit-mask: radial-gradient(
+      circle at 50% 50%,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.6) 45%,
+      rgba(0, 0, 0, 0.2) 65%,
+      transparent 75%
+    );
+    animation: drift 18s linear infinite;
+    pointer-events: none;
+  }
+
+  /* Halftone dot wash */
+  .halftone-wash {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+          circle at 12px 12px,
+          rgba(0, 0, 0, 0.06) 2px,
+          transparent 3px
+        )
+        0 0/24px 24px,
+      radial-gradient(
+          circle at 12px 12px,
+          rgba(0, 0, 0, 0.04) 1px,
+          transparent 2px
+        )
+        12px 12px/24px 24px;
+    animation: drift 30s linear infinite;
+    pointer-events: none;
+  }
+
+  .comic-bubble {
+    position: relative;
+    background: #fff;
+    border: 4px solid #000;
+    border-radius: 1.25rem;
+    padding: 1rem 1.25rem;
+    box-shadow: 8px 8px 0 #000;
+  }
+
+  .comic-bubble-left::after {
+    content: "";
+    position: absolute;
+    bottom: 22px;
+    left: -10px;
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    border-bottom: 4px solid #000;
+    border-left: 4px solid #000;
+    transform: rotate(45deg);
+  }
+
+  /* Hover/focus swap for speech lines */
+  .swap {
+    position: relative;
+  }
+  .swap .idle {
+    display: inline;
+  }
+  .swap .active {
+    display: none;
+  }
+  .group:hover .swap .idle,
+  .group:focus-within .swap .idle {
+    display: none;
+  }
+  .group:hover .swap .active,
+  .group:focus-within .swap .active {
+    display: inline;
+  }
+
+  .panel {
+    position: relative;
+    background: #fff;
+    border: var(--comic-border-width) solid var(--comic-border-color);
+    border-radius: var(--comic-radius);
+    box-shadow: var(--comic-shadow), inset 3px 3px 0 rgba(0, 0, 0, 0.06),
+      inset -3px -3px 0 rgba(255, 255, 255, 0.7);
+  }
+
+  /* Decorative stickers */
+  .sticker {
+    position: absolute;
+    right: -8px;
+    bottom: -8px;
+    background: var(--puffy-yellow);
+    border: 4px solid #000;
+    box-shadow: 6px 6px 0 #000;
+    border-radius: 9999px;
+    padding: 0.35rem 0.6rem;
+    transform: rotate(-8deg);
+    font-weight: 900;
+  }
+
+  .cta-chip {
+    background: var(--puffy-yellow);
+    border: 3px solid #000;
+    border-radius: 9999px;
+    padding: 0.45rem 0.75rem;
+    box-shadow: 4px 4px 0 #000;
+    font-weight: 900;
+  }
+
+  /* Animations */
+  @keyframes drift {
+    to {
+      background-position: 200% 0;
+    }
+  }
+
+  /* Cycle text color through your palette */
+  .palette-loop {
+    animation: palette-text var(--palette-dur, 12s) linear infinite;
+  }
+  @keyframes palette-text {
+    0% {
+      color: var(--squish-me-purple);
+    }
+    25% {
+      color: var(--puffy-yellow);
+    }
+    50% {
+      color: var(--playful-pink);
+    }
+    75% {
+      color: var(--soft-green);
+    }
+    100% {
+      color: var(--squish-me-purple);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .halftone-wash,
+    .speed-lines,
+    .palette-loop {
+      animation: none;
+    }
+  }
+}
