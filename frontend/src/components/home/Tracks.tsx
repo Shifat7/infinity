@@ -31,7 +31,6 @@ function ComicIssue({
   panels,
 }: IssueSpec & { index: number }) {
   const trackRef = useRef<HTMLDivElement>(null);
-
   // Mobile scroll navigation
   const scrollTo = (i: number) => {
     const el = trackRef.current?.querySelector<HTMLElement>(
@@ -63,7 +62,6 @@ function ComicIssue({
       scrollTo(Math.max(0, idx < 0 ? 0 : idx - 1));
     }
   };
-
   return (
     <section id={id} aria-labelledby={`${id}-title`} className="mb-16">
       {/* Header: label, title, share button */}
@@ -79,7 +77,6 @@ function ComicIssue({
         </div>
         <ShareButtons title={title} anchor={`#${id}`} />
       </header>
-
       {/* Panel carousel (mobile) / grid (desktop) */}
       <div
         ref={trackRef}
@@ -91,10 +88,16 @@ function ComicIssue({
         className="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-3 md:grid md:overflow-visible md:gap-8 md:[grid-auto-rows:minmax(260px,auto)] md:grid-cols-3"
       >
         {panels.map((p, i) => (
-          <PanelCard key={i} index={i} {...p} />
+          <PanelCard
+            key={i}
+            index={i}
+            {...p}
+            isLast={i === panels.length - 1}
+            ctaHref={ctaHref}
+            ctaText={ctaText}
+          />
         ))}
       </div>
-
       {/* Navigation dots (mobile only) */}
       <div className="mt-3 flex items-center justify-center gap-2 md:hidden">
         {panels.map((_, i) => (
@@ -106,13 +109,6 @@ function ComicIssue({
             data-on={i === 0}
           />
         ))}
-      </div>
-
-      {/* CTA */}
-      <div className="mt-6 flex justify-end">
-        <a href={ctaHref} className="cta-chip" aria-label={ctaText}>
-          {ctaText}
-        </a>
       </div>
     </section>
   );
@@ -128,7 +124,15 @@ function PanelCard({
   cue,
   Graphic,
   tone,
-}: PanelSpec & { index: number }) {
+  isLast,
+  ctaHref,
+  ctaText,
+}: PanelSpec & {
+  index: number;
+  isLast?: boolean;
+  ctaHref?: string;
+  ctaText?: string;
+}) {
   const reduce = useReducedMotion();
   return (
     <motion.article
@@ -141,7 +145,7 @@ function PanelCard({
       transition={{ type: "spring", stiffness: 120, damping: 14 }}
       className={[
         "group panel p-4 min-w-[86%] snap-center md:min-w-0",
-        `bg-${tone}`,
+        `${index === 2 ? "bd-yellow" : ""}`,
       ].join(" ")}
     >
       <div className="text-lg font-extrabold uppercase tracking-wide">
@@ -164,6 +168,19 @@ function PanelCard({
           )}
           <div className="mt-2 opacity-80">Scene cue:</div>
           <p>{cue}</p>
+          {/* CTA for last panel */}
+          {isLast && ctaHref && ctaText && (
+            <div className="mt-6 flex justify-center">
+              <a
+                href={ctaHref}
+                className="cta-chip animate-bounce"
+                aria-label={ctaText}
+                tabIndex={0}
+              >
+                {ctaText}
+              </a>
+            </div>
+          )}
         </figcaption>
       </figure>
     </motion.article>
