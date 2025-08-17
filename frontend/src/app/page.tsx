@@ -10,7 +10,8 @@ import { getModelRecommendations } from "@/lib/api";
 import Link from "next/link";
 
 // Mock feedback text for a student
-const mockFeedbackText = "The student is struggling with subitisation and addition facts.";
+const mockFeedbackText =
+  "The student is struggling with subitisation and addition facts.";
 
 // If you later import real images, set heroSrc to the imported file's .src
 const heroSrc: string | null = null;
@@ -21,7 +22,9 @@ export default function OnboardingClient() {
   const [loginType, setLoginType] = useState<"therapist" | "student" | null>(
     null
   );
-  const [recommendations, setRecommendations] = useState<Record<string, number>>({});
+  const [recommendations, setRecommendations] = useState<
+    Record<string, number>
+  >({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -197,36 +200,16 @@ export default function OnboardingClient() {
         </div>
       </section>
 
-      {/* Recommended Games */}
+      {/* Benefits */}
       <section className="py-16 md:py-24 bg-blue/5 border-y-8 border-black">
-        <div className="max-w-7xl mx-auto">
-          <header className="text-center mb-12 md:mb-16">
-            <h2 className="text-3xl sm:text-4xl font-black tracking-tight">
-              Your Recommended Games
-            </h2>
-          </header>
-          {loading ? (
-            <div>Loading...</div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {recommendations['subatisation'] === 1 && (
-                <Link href="/games/subitisation">
-                  <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                    <h2 className="text-2xl font-bold mb-2">Subitisation Game</h2>
-                    <p>Practice your quick counting skills!</p>
-                  </div>
-                </Link>
-              )}
-              {recommendations['addition facts'] === 1 && (
-                <Link href="/games/manipulatives">
-                  <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                    <h2 className="text-2xl font-bold mb-2">Integer Blocks</h2>
-                    <p>Learn addition and subtraction with colorful chips!</p>
-                  </div>
-                </Link>
-              )}
-            </div>
-          )}
+        {/* … your existing feature cards … */}
+        <div className="text-center mt-14">
+          <button
+            onClick={() => openLogin("student")}
+            className="px-8 py-4 text-lg font-black border-4 border-black rounded-xl bg-blue text-black shadow-[8px_8px_0_#000] active:translate-y-0.5"
+          >
+            Get Started Free <ArrowRight className="ml-2 inline" />
+          </button>
         </div>
       </section>
 
