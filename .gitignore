@@ -38,6 +38,8 @@ next-env.d.ts
 # Python backend
 backend/test.db
 backend/comicco.db
-backend/app/__pycache__/
-backend/__pycache__/
+**/__pycache__/
 backend/app/ai_core/model/
+backend/.venv/
+backend/.pytest_cache/
+backend/main.db
